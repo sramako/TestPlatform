@@ -1,0 +1,184 @@
+/* Split the screen in half */
+.explorer {
+  height: 100%;
+  width: 25%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 1px;
+  right: 0;
+  /* background-color: red; */
+  color: #555;
+}
+
+/* Split the screen in half */
+.canvas {
+  height: 100%;
+  width: 75%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+  left: 0;
+  background-color: #E0E0E0;
+  color: white;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -0%);
+  text-align: left;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+
+/* Button */
+.button {
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+}
+
+.empty {
+  background-color: #aaa;
+}
+
+.marked {
+  background-color: #2196F3;
+}
+
+.current {
+  background-color: #E53935;
+}
+
+/* Card */
+.card {
+  color: black;
+  background-color: white;
+  box-shadow: 10px -10px 5px #CCC;
+  margin-top: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Answer Card */
+.acard {
+  border-radius: 25px;
+  color: black;
+  box-shadow: 10px -10px 5px #CCC;
+  margin-top: 20px;
+  margin-left: 25px;
+  margin-right: 25px;
+  padding-left: 25px;
+  padding-right: 15px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.noanswer {
+  background-color: #FAFAFA;
+}
+
+.answer {
+  background-color: #9FA8DA;
+}
+
+/* Header */
+.header {
+  margin-left: 20px;
+  color: #777;
+}
+
+.number {
+  margin-right: 5px;
+  font-size: 80%;
+  background-color: #03A9F4;
+  color: white;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+/* Create two equal columns that floats next to each other */
+.column1 {
+  float: left;
+  width: 5%;
+  padding: 10px;
+}
+
+.column2 {
+  float: left;
+  width: 95%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Snackbar */
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}

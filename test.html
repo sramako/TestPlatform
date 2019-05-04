@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+
+		<title></title>
+
+    <!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/test.css">
+
+		<!-- FRAMEWORKS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/sweetalert.min.js"></script>
+		<script src="js/angular.min.js"></script>
+
+		<!-- CUSTOM MODULES -->
+		<!-- <script src="js/session.js"></script>
+		<script src="js/ajax.js"></script>
+		<script src="js/cart.js"></script>
+    <script src="js/addRestaurant.js"></script> -->
+    <script type="text/javascript">
+      n = 0;
+      $.ajax({
+        url : "http://127.0.0.1:5000/size",
+        type : "get",
+        async: false,
+        success : function(data) {
+          n = Number(data);
+        },
+      });
+
+      setInterval(function() {
+        if( window.innerHeight != screen.height) {
+          swal({title:"Read Carefully!",text:"This test requires to be written in fullscreen mode. Do not try to escape the fullscreen mode. This will cause disqualification for the test."})
+          console.log("Esc")
+          var el = document.documentElement
+            , rfs = // for newer Webkit and Firefox
+                   el.requestFullScreenxxx
+                || el.webkitRequestFullScreen
+                || el.mozRequestFullScreen
+                || el.msRequestFullScreen
+            ;
+            if(typeof rfs!="undefined" && rfs){
+              rfs.call(el);
+            } else if(typeof window.ActiveXObject!="undefined"){
+              // for Internet Explorer
+              var wscript = new ActiveXObject("WScript.Shell");
+              if (wscript!=null) {
+                 wscript.SendKeys("{F11}");
+              }
+            }
+          }
+        }, 2000);
+
+    </script>
+
+	</head>
+	<body>
+
+    <div class="canvas">
+      <div class="quiz">
+
+        <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
+        <header class="header">
+          <span>Question</span>
+          <span><h3 id="num"  style="display:inline"></h3></span>
+        </header>
+
+        <div class="card" >
+              <div class="card-content white-text">
+                <div class="card-title">Q :</div>
+                <p id="que"></p>
+              </div>
+              <div class="card-action">
+                <a href="#">Report Error</a>
+              </div>
+        </div>
+
+          <div class="acard noanswer" id="cA">
+              <div class="row">
+                <div class="column1">
+                  <span class="number">A</span>
+                </div>
+                <div class="column2">
+                  <p id="A"></p>
+                </div>
+              </div>
+          </div>
+
+          <div class="acard noanswer" id="cB">
+              <div class="row">
+                <div class="column1">
+                  <span class="number">B</span>
+                </div>
+                <div class="column2">
+                  <p id="B"></p>
+                </div>
+              </div>
+          </div>
+
+          <div class="acard noanswer" id="cC">
+              <div class="row">
+                <div class="column1">
+                  <span class="number">C</span>
+                </div>
+                <div class="column2">
+                  <p id="C"></p>
+                </div>
+              </div>
+          </div>
+
+          <div class="acard noanswer" id="cD">
+              <div class="row">
+                <div class="column1">
+                  <span class="number">D</span>
+                </div>
+                <div class="column2">
+                  <p id="D"></p>
+                </div>
+              </div>
+          </div>
+
+      </div>
+    </div>
+
+    <div class="explorer">
+      <div class="centered">
+        <!-- <img src="img_avatar.png" alt="Avatar man"> -->
+        <h5>Time Remaining:</h5>
+        <h3 id="time"></h3>
+        <br>
+        <div id="grid">
+        </div>
+      </div>
+    </div>
+
+    <div id="snackbar"></div>
+
+  </body>
+  <script type="text/javascript">
+
+
+    // Timer
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.text(minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+    current = 1;
+    marked = 0;
+    for(i=1; i<n+1; i++) {
+      $("#grid").append("<button class='button empty'  id='"+i+"'>"+i+"</button>")
+    }
+
+    load = function(i) {
+      console.log('Loading '+i);
+      $.get(
+        'http://127.0.0.1:5000/pull',
+        {
+          'i':i
+        },
+        function(data) {
+            data = JSON.parse(data)
+            $('#num').text(i);
+            $('#que').text(data[0]);
+            $('#A').text(data[1]);
+            $('#B').text(data[2]);
+            $('#C').text(data[3]);
+            $('#D').text(data[4]);
+          })
+      }
+
+    // Initialize
+    load(1);
+    $('#'+current).attr("class","button current");
+    $.get(
+      'http://127.0.0.1:5000/start',
+      {
+
+      },
+      function(data) {
+        jQuery(function ($) {
+            var time = Number(data),
+            display = $('#time');
+            startTimer(time, display);
+        });
+      })
+
+      $.get(
+        'http://127.0.0.1:5000/loadstate',
+        {
+
+        },
+        function(data) {
+          if(data!="nosaves") {
+            notify("Loading Saved State...");
+            data = JSON.parse(data)
+            for(var key in data) {
+              if (data.hasOwnProperty(key)) {
+                $('#'+key).attr("class","button marked");
+                if(key==current) {
+                  $("#c"+data[key]).attr("class","acard answer");
+                  notify("Already Answered!");
+                  marked = 1;
+                }
+              }
+            }
+          }
+        }
+      );
+
+    // Change Question
+    $('button').click( function() {
+      console.log(current);
+      if(marked==0) {
+        $('#'+current).attr("class","button empty");
+      }
+      else {
+        marked = 0;
+        $('#'+current).attr("class","button marked");
+      }
+      i = $(this).html();
+      current = i
+      $(this).attr("class","button current")
+      $('.acard').attr("class","acard noanswer");
+      load(i);
+      $.get(
+        'http://127.0.0.1:5000/check',
+        {
+          'i':current
+        },
+        function(data) {
+          if(data!='blank') {
+            $("#c"+data).attr("class","acard answer");
+            notify("Already Answered!");
+            marked = 1;
+          }
+        }
+      );
+    })
+
+    // Answer Selection
+    $('.acard').click(function() {
+      $('.acard').attr("class","acard noanswer");
+      var res = $(this).attr('id')[1];
+      $(this).attr("class","acard answer");
+      marked = 1;
+      $.get(
+        'http://127.0.0.1:5000/push',
+        {
+          'i':current,
+          'res':res
+        },
+        function(data) {
+          notify("Saved")
+          if(data=="Success") {
+          }
+        }
+      );
+    })
+
+    // Notification
+    notify = function(message) {
+      $("#snackbar").text(message);
+      var x = document.getElementById("snackbar");
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+
+  </script>
+</html>
