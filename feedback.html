@@ -81,13 +81,13 @@
 
 		$('button').click( function() {
 			$.get(
-        'home'+'feedback',
+        home+'feedback',
         {
           'email':email,
 					'value':value
         },
         function(data) {
-					window.open("http://localhost/Quiz/end.html","_self")
+					window.open("end.html","_self")
         }
       );
 		})
