@@ -16,6 +16,7 @@
 		<script src="js/angular.min.js"></script>
 
 		<!-- CUSTOM MODULES -->
+		<script src="js/config.js"></script>
 		<script src="js/session.js"></script>
     <script type="text/javascript">
 
@@ -80,7 +81,7 @@
 
 		$('button').click( function() {
 			$.get(
-        'http://127.0.0.1:5000/feedback',
+        'home'+'feedback',
         {
           'email':email,
 					'value':value

@@ -17,6 +17,7 @@
     <script src="js/angular.min.js"></script>
 
     <!-- CUSTOM MODULES -->
+		<script src="js/config.js"></script>
     <script src="js/session.js"></script>
     <script src="js/menu.js"></script>
     <script type="text/javascript">
@@ -71,7 +72,7 @@
 	var session_id = getCookie('session_id');
 
   $.get(
-      'http://localhost:5000/tests',
+      'home'+'tests',
       {
 						'email':email,
 						'session_id':session_id
