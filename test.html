@@ -16,14 +16,22 @@
 		<script src="js/angular.min.js"></script>
 
 		<!-- CUSTOM MODULES -->
-		<!-- <script src="js/session.js"></script>
-		<script src="js/ajax.js"></script>
+		<script src="js/session.js"></script>
+		<!-- <script src="js/ajax.js"></script>
 		<script src="js/cart.js"></script>
     <script src="js/addRestaurant.js"></script> -->
     <script type="text/javascript">
+
+      email = getCookie('email');
+      session_id = getCookie('session_id');
+	  	test_id = getCookie('test_id');
+
       n = 0;
       $.ajax({
         url : "http://127.0.0.1:5000/size",
+				data : {
+					"test_id":test_id
+				},
         type : "get",
         async: false,
         success : function(data) {
@@ -31,8 +39,8 @@
         },
       });
 
-      setInterval(function() {
-        if( window.innerHeight != screen.height) {
+      gofullscreen = function() {
+        if( window.innerHeight < screen.height) {
           swal({title:"Read Carefully!",text:"This test requires to be written in fullscreen mode. Do not try to escape the fullscreen mode. This will cause disqualification for the test."})
           console.log("Esc")
           var el = document.documentElement
@@ -52,7 +60,11 @@
               }
             }
           }
-        }, 2000);
+      }
+
+      setInterval(function() {
+          //gofullscreen();
+      }, 2000);
 
     </script>
 
@@ -123,6 +135,8 @@
           </div>
 
       </div>
+			<br><br>
+			<button style="margin-left:30px" type="button" class="btn-lg btn-danger" id="submit">Submit Test & Leave</button>
     </div>
 
     <div class="explorer">
@@ -141,6 +155,11 @@
   </body>
   <script type="text/javascript">
 
+    finish = function() {
+      swal('Time Up!').then(
+        window.open("http://localhost/Quiz/feedback.html","_self")
+      );
+    }
 
     // Timer
     function startTimer(duration, display) {
@@ -155,7 +174,7 @@
             display.text(minutes + ":" + seconds);
 
             if (--timer < 0) {
-                timer = duration;
+                finish();
             }
         }, 1000);
     }
@@ -171,16 +190,27 @@
       $.get(
         'http://127.0.0.1:5000/pull',
         {
-          'i':i
+          'i':i,
+					'test_id':test_id,
+					'session_id':session_id,
+					'email':email
         },
         function(data) {
-            data = JSON.parse(data)
-            $('#num').text(i);
-            $('#que').text(data[0]);
-            $('#A').text(data[1]);
-            $('#B').text(data[2]);
-            $('#C').text(data[3]);
-            $('#D').text(data[4]);
+						console.log(data);
+						if(data=="\"Permission Denied\"") {
+							swal('Access Denied');
+							//Redirect Here
+							console.log('Redirect');
+						}
+						else {
+		          data = JSON.parse(data);
+		          $('#num').text(i);
+		          $('#que').text(data[0]);
+		          $('#A').text(data[1]);
+		          $('#B').text(data[2]);
+		          $('#C').text(data[3]);
+		          $('#D').text(data[4]);
+						}
           })
       }
 
@@ -190,9 +220,14 @@
     $.get(
       'http://127.0.0.1:5000/start',
       {
-
+        'email':email,
+        'session_id':session_id,
+				'test_id':test_id
       },
       function(data) {
+        if(data=='expired') {
+          finish();
+        }
         jQuery(function ($) {
             var time = Number(data),
             display = $('#time');
@@ -203,7 +238,8 @@
       $.get(
         'http://127.0.0.1:5000/loadstate',
         {
-
+          'email':email,
+          'session_id':session_id
         },
         function(data) {
           if(data!="nosaves") {
@@ -212,6 +248,7 @@
             for(var key in data) {
               if (data.hasOwnProperty(key)) {
                 $('#'+key).attr("class","button marked");
+                // TODO: ADD to cached state
                 if(key==current) {
                   $("#c"+data[key]).attr("class","acard answer");
                   notify("Already Answered!");
@@ -241,9 +278,12 @@
       $.get(
         'http://127.0.0.1:5000/check',
         {
-          'i':current
+          'i':current,
+          'email':email,
+          'session_id':session_id
         },
         function(data) {
+          console.log(data);
           if(data!='blank') {
             $("#c"+data).attr("class","acard answer");
             notify("Already Answered!");
@@ -263,11 +303,17 @@
         'http://127.0.0.1:5000/push',
         {
           'i':current,
-          'res':res
+          'res':res,
+          'email':email,
+          'session_id':session_id,
+					'test_id':test_id
         },
         function(data) {
-          notify("Saved")
-          if(data=="Success") {
+          if(data=="saved") {
+            notify("Saved");
+          }
+          else {
+            notify(data);
           }
         }
       );
@@ -281,6 +327,9 @@
       setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
+		$('button').click( function() {
+					window.open("http://localhost/Quiz/feedback.html","_self")
+		})
 
   </script>
 </html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+
+		<title></title>
+
+    <!-- CSS FILES -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+
+
+    <!-- FRAMEWORKS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/angular.min.js"></script>
+
+    <!-- CUSTOM MODULES -->
+    <script src="js/session.js"></script>
+    <script src="js/menu.js"></script>
+    <script type="text/javascript">
+
+    </script>
+
+	</head>
+	<body>
+
+    <div class="all">
+      <div class="cards" id="stack">
+        <!-- <div class="card shadow-1">
+          <h2>Space and Science Test 1</h2>
+          <p>First demo question set</p>
+          <button type="button" class="btn btn-dark">Take Test</button>
+        </div>
+        <div class="card shadow-1"></div>
+        <div class="card shadow-1"></div> -->
+      </div>
+    </div>
+
+  </body>
+</html>
+
+<script type="text/javascript">
+  push = function(h,s,id) {
+    var card = $('<div>');
+    card.attr('class','card shadow-1')
+
+    var heading = $('<h2>');
+    heading.text(h)
+
+    var subheading = $('<p>');
+    subheading.text(s)
+
+    var button = $("<button type='button' class='btn btn-dark'>Take Test</button>");
+    button.attr('id',id)
+    button.attr('onclick','capture(this.id)')
+
+    card.append(heading)
+    card.append(subheading);
+    card.append(button);
+    card.appendTo('#stack');
+  }
+
+  // var heading = 'Space and Science Test 1';
+  // var subheading = 'First Demo question set';
+  // var id = '153';
+  // push(heading,subheading,id);
+
+	var email = getCookie('email');
+	var session_id = getCookie('session_id');
+
+  $.get(
+      'http://localhost:5000/tests',
+      {
+						'email':email,
+						'session_id':session_id
+      },
+      function(data) {
+            var data = JSON.parse(data);
+            s = data.length;
+            for(i=0; i<s; i++) {
+                  var heading = data[i]['name']
+                  var subheading = data[i]['sub'];
+                  var id = data[i]['test_id'];
+                  push(heading, subheading, id);
+            }
+      });
+
+      capture = function(id) {
+            setCookie('test_id',id,1);
+            window.open('http://localhost/Quiz/test.html','_self');
+      }
+
+
+</script>

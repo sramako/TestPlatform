@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+
+		<title></title>
+
+    <!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/feedback.css">
+
+		<!-- FRAMEWORKS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/sweetalert.min.js"></script>
+		<script src="js/angular.min.js"></script>
+
+		<!-- CUSTOM MODULES -->
+		<script src="js/session.js"></script>
+    <script type="text/javascript">
+
+    </script>
+
+	</head>
+	<body>
+
+    <div class="app">
+      <h1>How was your experience?</h1>
+      <p>Let us know how we did</p>
+
+      <div class="container">
+        <div class="item">
+          <label for="0">
+          <input class="radio" type="radio" name="feedback" id="0" value="0">
+          <span>🤬</span>
+        </label>
+        </div>
+
+        <div class="item">
+          <label for="1">
+          <input class="radio" type="radio" name="feedback" id="1" value="1">
+          <span>🙁</span>
+        </label>
+        </div>
+
+        <div class="item">
+          <label for="2">
+          <input class="radio" type="radio" name="feedback" id="2" value="2">
+          <span>😶</span>
+        </label>
+        </div>
+
+        <div class="item">
+          <label for="3">
+          <input class="radio" type="radio" name="feedback" id="3" value="3">
+          <span>😁</span>
+        </label>
+        </div>
+
+        <div class="item">
+          <label for="4">
+          <input class="radio" type="radio" name="feedback" id="4" value="4">
+          <span>😍</span>
+        </label>
+        </div>
+
+      </div>
+			<button type="button" class="btn btn-warning">Submit</button>
+    </div>
+  </body>
+	<script>
+		value = 5;
+
+		var email = getCookie('email')
+
+		$('input').click( function() {
+			console.log($(this).attr('id')[0]);
+			value = Number($(this).attr('id')[0])+1;
+		})
+
+		$('button').click( function() {
+			$.get(
+        'http://127.0.0.1:5000/feedback',
+        {
+          'email':email,
+					'value':value
+        },
+        function(data) {
+					window.open("http://localhost/Quiz/end.html","_self")
+        }
+      );
+		})
+	</script>
+</html>

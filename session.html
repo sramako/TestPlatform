@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+
+		<title></title>
+
+    <!-- CSS FILES -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/test.css">
+
+		<!-- FRAMEWORKS -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/sweetalert.min.js"></script>
+		<script src="js/angular.min.js"></script>
+
+		<!-- CUSTOM MODULES -->
+    <script type="text/javascript">
+
+    /**
+     * The Sign-In client object.
+    */
+    var auth2;
+
+    /**
+     * Initializes the Sign-In client.
+    */
+    var initClient = function() {
+        gapi.load('auth2', function(){
+            /**
+             * Retrieve the singleton for the GoogleAuth library and set up the
+             * client.
+             */
+            auth2 = gapi.auth2.init({
+                client_id: '598234534607-e9uqjm3ipb464ljv7h6d644m40p030bu.apps.googleusercontent.com'
+            });
+
+            // Attach the click handler to the sign-in button
+            auth2.attachClickHandler('signin-button', {}, onSuccess, onFailure);
+        });
+    };
+
+    /**
+     * Handle successful sign-ins.
+     */
+    var onSuccess = function(user) {
+        console.log('Signed in as ' + user.getBasicProfile().getName());
+     };
+
+    /**
+     * Handle sign-in failures.
+     */
+    var onFailure = function(error) {
+        console.log(error);
+    };
+
+    initClient();
+
+    </script>
+
+	</head>
+	<body>
+
+
+
+  </body>
+</html>
