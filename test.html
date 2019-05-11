@@ -29,7 +29,7 @@
 
       n = 0;
       $.ajax({
-        url : "home'+'size",
+        url : home+"size",
 				data : {
 					"test_id":test_id
 				},
@@ -189,7 +189,7 @@
     load = function(i) {
       console.log('Loading '+i);
       $.get(
-        'home'+'pull',
+        home+'pull',
         {
           'i':i,
 					'test_id':test_id,
@@ -219,7 +219,7 @@
     load(1);
     $('#'+current).attr("class","button current");
     $.get(
-      'home'+'start',
+      home+'start',
       {
         'email':email,
         'session_id':session_id,
@@ -237,7 +237,7 @@
       })
 
       $.get(
-        'home'+'loadstate',
+        home+'loadstate',
         {
           'email':email,
           'session_id':session_id
@@ -277,7 +277,7 @@
       $('.acard').attr("class","acard noanswer");
       load(i);
       $.get(
-        'home'+'check',
+        home+'check',
         {
           'i':current,
           'email':email,
@@ -301,7 +301,7 @@
       $(this).attr("class","acard answer");
       marked = 1;
       $.get(
-        'home'+'push',
+        home+'push',
         {
           'i':current,
           'res':res,
