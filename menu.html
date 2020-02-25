@@ -79,6 +79,7 @@
       },
       function(data) {
             var data = JSON.parse(data);
+            console.log(data)
             s = data.length;
             for(i=0; i<s; i++) {
                   var heading = data[i]['name']

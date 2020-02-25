@@ -1,15 +1,40 @@
 <html>
- <body>
-   <script src="js/config.js"></script>
-    <form action = "https://qtestserver.herokuapp.com/uploader" method = "POST"
-       enctype = "multipart/form-data">
-       <input type = "text" name = "name" />
-       <br>
-       <input type = "text" name = "sub" />
-       <br>
-       <input type = "file" name = "file" />
-       <br>
-       <input type = "submit"/>
-    </form>
- </body>
+
+<head>
+  <!-- CSS FILES -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css/upload.css">
+
+  <!-- FRAMEWORKS -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/sweetalert.min.js"></script>
+  <script src="js/angular.min.js"></script>
+
+  <!-- CUSTOM MODULES -->
+  <script src="js/config.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/upload.js"></script>
+</head>
+
+<body>
+
+  <div class="login-page">
+    <div class="form">
+      <form class="login-form" action="http://127.0.0.1:5000/uploader" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Test Name" maxlength="20" />
+        <br>
+        <input type="text" name="sub" placeholder="Topic" maxlength="20" />
+        
+        <input type="file" name="file" id="file" class="upload" />
+        <label for="file">Select file</label>
+        <br>
+        <input type="submit" />
+        <p class="message">Manage Uploaded Tests: <a href="#">Coming Soon!</a> :)</p>
+      </form>
+    </div>
+  </div>
+
+</body>
+
 </html>

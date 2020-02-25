@@ -44,6 +44,7 @@
         if( window.innerHeight < screen.height) {
           swal({title:"Read Carefully!",text:"This test requires to be written in fullscreen mode. Do not try to escape the fullscreen mode. This will cause disqualification for the test."})
           console.log("Esc")
+          //TODO: Finish if overdone 
           var el = document.documentElement
             , rfs = // for newer Webkit and Firefox
                    el.requestFullScreenxxx
@@ -64,7 +65,7 @@
       }
 
       setInterval(function() {
-          //gofullscreen();
+          gofullscreen();
       }, 2000);
 
     </script>
@@ -162,6 +163,12 @@
       );
     }
 
+    reject = function() {
+      swal('You can not edit this test!').then(
+        window.open("menu.html","_self")
+      );
+    }
+
     // Timer
     function startTimer(duration, display) {
         var timer = duration, minutes, seconds;
@@ -227,7 +234,7 @@
       },
       function(data) {
         if(data=='expired') {
-          finish();
+          reject();
         }
         jQuery(function ($) {
             var time = Number(data),
@@ -286,6 +293,7 @@
         function(data) {
           console.log(data);
           if(data!='blank') {
+            console.log("Need to restore")
             $("#c"+data).attr("class","acard answer");
             notify("Already Answered!");
             marked = 1;
@@ -328,7 +336,8 @@
       setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 
-		$('button').click( function() {
+    // Submit Test 
+		$('#submit').click( function() {
 					window.open("feedback.html","_self")
 		})
 
